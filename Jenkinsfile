@@ -5,5 +5,4 @@ stage('Demo') {
   echo 'Hello World'
 
   sayHello 'Fabio Coelho'
-
 }
