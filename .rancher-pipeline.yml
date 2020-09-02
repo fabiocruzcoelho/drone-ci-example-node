@@ -11,5 +11,5 @@ stages:
       dockerfilePath: ./Dockerfile
       buildContext: .
       tag: estudosdevops/node-demo:use-tags-file
-      # pushRemote: true
-      # registry: index.docker.io
+      pushRemote: true
+      registry: index.docker.io
