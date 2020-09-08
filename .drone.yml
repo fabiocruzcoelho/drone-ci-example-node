@@ -6,7 +6,7 @@ steps:
 - name: kaniko
   image: banzaicloud/drone-kaniko
   settings:
-    repo: docker.io/estudosdevops/node
+    repo: estudosdevops/node
     registry: docker.io
     username:
         from_secret: docker-username
