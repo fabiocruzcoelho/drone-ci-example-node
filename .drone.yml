@@ -3,8 +3,12 @@ kind: pipeline
 name: default
 
 steps:
-- name: test
-  image: node
-  commands:
-  - npm install
-  - npm test
+- name: kaniko
+  image: banzaicloud/drone-kaniko
+  settings:
+    repo: docker.io/estudosdevops/node
+    registry: docker.io
+    username:
+        from_secret: docker-username
+    password:
+        from_secret: docker-password
