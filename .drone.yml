@@ -14,3 +14,70 @@ steps:
   commands:
   - npm install
   - npm test
+
+---
+kind: pipeline
+type: kubernetes
+name: Build Dockerfile
+
+steps:
+  - name: Build and Publish Image
+    image: plugins/docker
+    settings:
+      repo: estudosdevops/${DRONE_REPO_NAME}
+      tags:
+        - ${DRONE_SOURCE_BRANCH/\//-}
+        - ${DRONE_SOURCE_BRANCH/\//-}-${DRONE_COMMIT_SHA:0:5}
+      cache_from:
+        - estudosdevops/${DRONE_REPO_NAME}:${DRONE_SOURCE_BRANCH/\//-}
+      username:
+        from_secret: registry_username
+      password:
+        from_secret: registry_password
+    when:
+      event:
+        exclude:
+          - tag
+  - name: frontend
+    image: node
+    commands:
+    - npm install
+    - npm test
+
+  # - name: Fetch full git repo
+  #   image: docker:git
+  #   commands:
+  #     - git fetch --all
+  #   when:
+  #     event:
+  #       - tag
+
+  # - name: Check Master Commit
+  #   image: uala/drone-rancher-deploy
+  #   settings:
+  #     enforce_branch_for_tag: master
+  #     action: tag_check
+  #   when:
+  #     event:
+  #       - tag
+
+  # - name: check-master-image
+  #   image: ellerbrock/alpine-bash-curl-ssl
+  #   commands:
+  #     - echo "Running on agent $DRONE_MACHINE"
+  #     - URL=https://registry.hub.docker.com/v1/repositories/$REPO/tags/$MASTER_TAG
+  #     - CURL_RESPONSE=$(curl --silent -u $DOCKER_USER:$DOCKER_PASS $URL)
+  #     - echo -e "\e[34mCheck if master image $REPO:$MASTER_TAG exists..."
+  #     - test "$CURL_RESPONSE" == 'Tag not found' && (echo -e "\e[31mMaster image does not exists\e[0m"; exit 1)
+  #     - echo -e "\e[32mMaster image OK\e[0m"
+  #     - exit 0
+  #   environment:
+  #     REPO:  estudosdevops/${DRONE_REPO_NAME}
+  #     MASTER_TAG: master-${DRONE_COMMIT_SHA:0:8}
+  #     DOCKER_USER:
+  #       from_secret: registry_username
+  #     DOCKER_PASS:
+  #       from_secret: registry_password
+  #   when:
+  #     event:
+  #      - tag
