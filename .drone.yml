@@ -29,6 +29,7 @@ steps:
       - npm test
     when:
       event:
+        exclude:
         - tag
   # - name: Fetch full git repo
   #   image: docker:git
