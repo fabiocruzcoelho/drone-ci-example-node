@@ -1,13 +1,12 @@
 ---
 kind: pipeline
 type: kubernetes
-name: Build
+name: Build Dockerfile
 
 steps:
   - name: Build and Publish Image
     image: plugins/docker
     settings:
-      # repo: ${DRONE_REPO,,}
       repo: estudosdevops/${DRONE_REPO_NAME}
       tags:
         - ${DRONE_SOURCE_BRANCH/\//-}
