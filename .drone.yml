@@ -21,12 +21,15 @@ steps:
       event:
         exclude:
           - tag
+
   - name: frontend
     image: node
     commands:
-    - npm install
-    - npm test
-
+      - npm install
+      - npm test
+    when:
+      event:
+        - tag
   # - name: Fetch full git repo
   #   image: docker:git
   #   commands:
@@ -34,7 +37,6 @@ steps:
   #   when:
   #     event:
   #       - tag
-
   # - name: Check Master Commit
   #   image: uala/drone-rancher-deploy
   #   settings:
@@ -43,7 +45,6 @@ steps:
   #   when:
   #     event:
   #       - tag
-
   # - name: check-master-image
   #   image: ellerbrock/alpine-bash-curl-ssl
   #   commands:
