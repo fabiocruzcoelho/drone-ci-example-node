@@ -37,7 +37,7 @@ steps:
       # build_args:
       # - COMMIT_SHA=${DRONE_COMMIT_SHA}
       # - COMMIT_AUTHOR_EMAIL=${DRONE_COMMIT_AUTHOR_EMAIL}
-      username: estudosdevops
-        # from_secret: DOCKER_USERNAME
-      password: estudosdevops@123
-        # from_secret: DOCKER_PASSWORD
+      username:
+        from_secret: DOCKER_USERNAME
+      password:
+        from_secret: DOCKER_PASSWORD
