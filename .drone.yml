@@ -4,21 +4,40 @@ type: kubernetes
 name: Build
 
 steps:
-  - name: Build and Publish Image
-    image: plugins/docker
+  # - name: Build and Publish Image
+  #   image: plugins/docker
+  #   settings:
+  #     # repo: ${DRONE_REPO,,}
+  #     repo: estudosdevops/drone-ci-example-node
+  #     tags:
+  #       - ${DRONE_SOURCE_BRANCH/\//-}
+  #       - ${DRONE_SOURCE_BRANCH/\//-}-${DRONE_COMMIT_SHA:0:8}
+  #     cache_from:
+  #       - estudosdevops/drone-ci-example-node:${DRONE_SOURCE_BRANCH/\//-}
+  #     username: estudosdevops
+  #       # from_secret: DOCKER_USERNAME
+  #     password: estudosdevops@123
+  #       # from_secret: DOCKER_PASSWORD
+  #   when:
+  #     event:
+  #       exclude:
+  #         - tag
+
+  - name: Build with Kaniko
+    image: banzaicloud/drone-kaniko
     settings:
-      # repo: ${DRONE_REPO,,}
+      # registry: registry.example.com # if not provided index.docker.io is supposed
       repo: estudosdevops/drone-ci-example-node
-      tags:
-        - ${DRONE_SOURCE_BRANCH/\//-}
-        - ${DRONE_SOURCE_BRANCH/\//-}-${DRONE_COMMIT_SHA:0:8}
-      cache_from:
-        - estudosdevops/drone-ci-example-node:${DRONE_SOURCE_BRANCH/\//-}
+      auto_tag: true
+      # tags:
+      # - ${DRONE_SOURCE_BRANCH/\//-}
+      # - ${DRONE_SOURCE_BRANCH/\//-}-${DRONE_COMMIT_SHA:0:8}
+      cache: true
+      skip_tls_verify: false # set to true for testing registries ONLY with self-signed certs
+      # build_args:
+      # - COMMIT_SHA=${DRONE_COMMIT_SHA}
+      # - COMMIT_AUTHOR_EMAIL=${DRONE_COMMIT_AUTHOR_EMAIL}
       username: estudosdevops
         # from_secret: DOCKER_USERNAME
       password: estudosdevops@123
         # from_secret: DOCKER_PASSWORD
-    when:
-      event:
-        exclude:
-          - tag
