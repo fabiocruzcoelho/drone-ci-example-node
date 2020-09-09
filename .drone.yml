@@ -27,7 +27,7 @@ steps:
     image: banzaicloud/drone-kaniko
     settings:
       registry: docker.io # if not provided index.docker.io is supposed
-      repo: docker.io/estudosdevops/drone-ci-example-node
+      repo: estudosdevops/drone-ci-example-node
       auto_tag: true
       # tags:
       # - ${DRONE_SOURCE_BRANCH/\//-}
