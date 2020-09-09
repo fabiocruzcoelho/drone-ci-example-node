@@ -50,12 +50,28 @@ steps:
       - echo -e "\e[32mMaster image OK\e[0m"
       - exit 0
     environment:
-      REPO:  estudosdevops/${DRONE_REPO_NAME}
-      MASTER_TAG: master-${DRONE_COMMIT_SHA:0:8}
+      REPO: estudosdevops/${DRONE_REPO_NAME}
+      MASTER_TAG: master-${DRONE_COMMIT_SHA:0:5}
       DOCKER_USER:
         from_secret: registry_username
       DOCKER_PASS:
         from_secret: registry_password
     when:
       event:
-       - tag
+        - tag
+
+  - name: Build docker image tag
+    image: plugins/docker
+    settings:
+      repo: estudosdevops/${DRONE_REPO_NAME}
+      tags:
+        - ${DRONE_TAG/\//-}
+      cache_from:
+        - estudosdevops/${DRONE_REPO_NAME}:master-${DRONE_COMMIT_SHA:0:5}
+      username:
+        from_secret: DOCKER_USERNAME
+      password:
+        from_secret: DOCKER_PASSWORD
+    when:
+      event:
+        - tag
