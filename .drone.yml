@@ -1,14 +1,23 @@
+---
 kind: pipeline
 type: kubernetes
-name: default
+name: Build
 
 steps:
-- name: kaniko
-  image: banzaicloud/drone-kaniko
-  settings:
-    repo: estudosdevops/node
-    registry: docker.io
-    username:
-        from_secret: docker-username
-    password:
-        from_secret: docker-password
+  - name: Build and Publish Image
+    image: plugins/docker
+    settings:
+      repo: ${DRONE_REPO,,}
+      tags:
+        - ${DRONE_SOURCE_BRANCH/\//-}
+        - ${DRONE_SOURCE_BRANCH/\//-}-${DRONE_COMMIT_SHA:0:8}
+      cache_from:
+        - ${DRONE_REPO,,}:${DRONE_SOURCE_BRANCH/\//-}
+      username:
+        from_secret: DOCKER_USERNAME
+      password:
+        from_secret: DOCKER_PASSWORD
+    when:
+      event:
+        exclude:
+          - tag
