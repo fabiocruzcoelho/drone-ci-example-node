@@ -8,17 +8,17 @@ steps:
     image: plugins/docker
     settings:
       # repo: ${DRONE_REPO,,}
-      repo: estudosdevops/drone-ci-example-node
+      repo: estudosdevops/${DRONE_REPO_NAME}
       tags:
         - ${DRONE_SOURCE_BRANCH/\//-}
         - ${DRONE_SOURCE_BRANCH/\//-}-${DRONE_COMMIT_SHA:0:5}
       cache_from:
-        - estudosdevops/drone-ci-example-node:${DRONE_SOURCE_BRANCH/\//-}
+        - estudosdevops/${DRONE_REPO_NAME}:${DRONE_SOURCE_BRANCH/\//-}
       username:
         from_secret: registry_username
       password:
         from_secret: registry_password
-trigger:
-  event:
-    exclude:
-    - tag
+    when:
+      event:
+        exclude:
+        - tag
