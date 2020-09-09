@@ -1,4 +1,3 @@
-# just to create `build` directory
 FROM node:10.15.3-alpine as builder
 WORKDIR /app
 COPY . ./
