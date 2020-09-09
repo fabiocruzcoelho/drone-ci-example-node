@@ -1,26 +1,26 @@
 ---
 kind: pipeline
 type: kubernetes
-name: Build Dockerfile
+name: build-docker-image
 
 steps:
-  # - name: Build and Publish Image
-  #   image: plugins/docker
-  #   settings:
-  #     repo: estudosdevops/${DRONE_REPO_NAME}
-  #     tags:
-  #       - ${DRONE_SOURCE_BRANCH/\//-}
-  #       - ${DRONE_SOURCE_BRANCH/\//-}-${DRONE_COMMIT_SHA:0:5}
-  #     cache_from:
-  #       - estudosdevops/${DRONE_REPO_NAME}:${DRONE_SOURCE_BRANCH/\//-}
-  #     username:
-  #       from_secret: registry_username
-  #     password:
-  #       from_secret: registry_password
-  #   when:
-  #     event:
-  #       exclude:
-  #         - tag
+  - name: build-docker-image-branch
+    image: plugins/docker
+    settings:
+      repo: estudosdevops/${DRONE_REPO_NAME}
+      tags:
+        - ${DRONE_SOURCE_BRANCH/\//-}
+        - ${DRONE_SOURCE_BRANCH/\//-}-${DRONE_COMMIT_SHA:0:5}
+      cache_from:
+        - estudosdevops/${DRONE_REPO_NAME}:${DRONE_SOURCE_BRANCH/\//-}
+      username:
+        from_secret: registry_username
+      password:
+        from_secret: registry_password
+    when:
+      event:
+        exclude:
+          - tag
 
   - name: Fetch full git repo
     image: docker:git
@@ -30,7 +30,7 @@ steps:
       event:
         - tag
 
-  - name: Check Master Commit
+  - name: check-master-commit
     image: uala/drone-rancher-deploy
     settings:
       enforce_branch_for_tag: master
