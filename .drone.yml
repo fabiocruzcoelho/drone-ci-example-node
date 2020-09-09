@@ -13,10 +13,10 @@ steps:
         - ${DRONE_SOURCE_BRANCH/\//-}-${DRONE_COMMIT_SHA:0:8}
       cache_from:
         - ${DRONE_REPO,,}:${DRONE_SOURCE_BRANCH/\//-}
-      username:
-        from_secret: DOCKER_USERNAME
-      password:
-        from_secret: DOCKER_PASSWORD
+      username: estudosdevops
+        # from_secret: DOCKER_USERNAME
+      password: estudosdevops@123
+        # from_secret: DOCKER_PASSWORD
     when:
       event:
         exclude:
