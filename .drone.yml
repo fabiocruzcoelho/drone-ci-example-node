@@ -4,23 +4,23 @@ type: kubernetes
 name: Build Dockerfile
 
 steps:
-  - name: Build and Publish Image
-    image: plugins/docker
-    settings:
-      repo: estudosdevops/${DRONE_REPO_NAME}
-      tags:
-        - ${DRONE_SOURCE_BRANCH/\//-}
-        - ${DRONE_SOURCE_BRANCH/\//-}-${DRONE_COMMIT_SHA:0:5}
-      cache_from:
-        - estudosdevops/${DRONE_REPO_NAME}:${DRONE_SOURCE_BRANCH/\//-}
-      username:
-        from_secret: registry_username
-      password:
-        from_secret: registry_password
-    when:
-      event:
-        exclude:
-          - tag
+  # - name: Build and Publish Image
+  #   image: plugins/docker
+  #   settings:
+  #     repo: estudosdevops/${DRONE_REPO_NAME}
+  #     tags:
+  #       - ${DRONE_SOURCE_BRANCH/\//-}
+  #       - ${DRONE_SOURCE_BRANCH/\//-}-${DRONE_COMMIT_SHA:0:5}
+  #     cache_from:
+  #       - estudosdevops/${DRONE_REPO_NAME}:${DRONE_SOURCE_BRANCH/\//-}
+  #     username:
+  #       from_secret: registry_username
+  #     password:
+  #       from_secret: registry_password
+  #   when:
+  #     event:
+  #       exclude:
+  #         - tag
 
   - name: Fetch full git repo
     image: docker:git
