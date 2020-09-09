@@ -26,10 +26,10 @@ steps:
   - name: Build with Kaniko
     image: banzaicloud/drone-kaniko
     settings:
-      registry: docker.io # if not provided index.docker.io is supposed
+      # registry: # if not provided index.docker.io is supposed
       repo: estudosdevops/drone-ci-example-node
-      auto_tag: true
-      # tags:
+      # auto_tag: true
+      tags: ${DRONE_COMMIT_SHA:0:5}
       # - ${DRONE_SOURCE_BRANCH/\//-}
       # - ${DRONE_SOURCE_BRANCH/\//-}-${DRONE_COMMIT_SHA:0:8}
       cache: true
@@ -38,6 +38,10 @@ steps:
       # - COMMIT_SHA=${DRONE_COMMIT_SHA}
       # - COMMIT_AUTHOR_EMAIL=${DRONE_COMMIT_AUTHOR_EMAIL}
       username:
-        from_secret: DOCKER_USERNAME
+        from_secret: docker-username
       password:
-        from_secret: DOCKER_PASSWORD
+        from_secret: docker-password
+    when:
+      event:
+        exclude:
+          - tag
