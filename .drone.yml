@@ -1,7 +1,7 @@
 ---
 kind: pipeline
 type: kubernetes
-name: Build Dockerfile
+name: Build
 
 steps:
   - name: Build and Publish Image
